@@ -11,7 +11,7 @@ export default function AuthPage() {
 
   useEffect(() => {
     if (currentUser) {
-      navigate("/setDisplay");
+      navigate("/");
     }
   }, [currentUser, navigate]);
 
