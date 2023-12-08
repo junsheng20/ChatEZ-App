@@ -9,10 +9,8 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/">
-            <Route path="auth" element={<AuthPage />} />
-            <Route path="setDisplay" element={<SetDisplayName />} />
-          </Route>
+          <Route path="/" element={<SetDisplayName />} />
+          <Route path="/auth" element={<AuthPage />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
