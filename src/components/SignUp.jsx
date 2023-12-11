@@ -44,14 +44,14 @@ export default function SignUp() {
       >
         <input
           type="email"
-          className="font-mono font-thin focus:font-light text-3xl text-white bg-gray-900 border-[1px] border-white focus:border-0 focus:border-b-[1px] focus:mt-[1px] focus:pl-[14px] focus:border-emerald-400 w-3/4 outline-0 p-3 focus:placeholder:text-emerald-400 focus:text-emerald-400 transition-all duration-100"
+          className="font-sans font-thin focus:font-light text-3xl text-white bg-gray-900 border-[1px] border-white focus:border-0 focus:border-b-[1px] focus:mt-[1px] focus:pl-[14px] focus:border-emerald-400 w-3/4 outline-0 p-3 focus:placeholder:text-emerald-400 focus:text-emerald-400 transition-all duration-100"
           placeholder="Email"
           onChange={(e) => setEmail(e.target.value)}
           value={email}
         />
         <input
           type="password"
-          className="font-mono font-thin text-3xl text-white bg-gray-900 border-[1px] border-white focus:border-0 focus:border-b-[1px] focus:mt-[1px] focus:pl-[14px] focus:border-emerald-400 w-3/4 outline-0 p-3 focus:placeholder:text-emerald-400 focus:text-emerald-400 focus:font-normal transition-all duration-100"
+          className="font-sans font-thin text-3xl text-white bg-gray-900 border-[1px] border-white focus:border-0 focus:border-b-[1px] focus:mt-[1px] focus:pl-[14px] focus:border-emerald-400 w-3/4 outline-0 p-3 focus:placeholder:text-emerald-400 focus:text-emerald-400 focus:font-normal transition-all duration-100"
           placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
           value={password}
@@ -65,7 +65,7 @@ export default function SignUp() {
         </button>
       </form>
 
-      <div className="text-white flex flex-row gap-10 text-2xl">
+      <div className="font-mono text-white flex flex-row gap-10 text-2xl">
         <p className="font-thin">Login with</p>
         <button
           className="hover:-translate-y-1 text-3xl transition-all duration-300"

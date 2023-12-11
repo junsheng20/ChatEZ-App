@@ -1,4 +1,4 @@
-import { getAuth, signOut } from "firebase/auth";
+import { getAuth, signOut, updateProfile } from "firebase/auth";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../components/AuthProvider";
@@ -8,12 +8,23 @@ export default function SetDisplayName() {
   const [isFocus, setIsFocus] = useState(false);
   const navigate = useNavigate();
   const { currentUser } = useContext(AuthContext);
+  const auth = getAuth();
 
-  const handleSignOut = async (e) => {
-    e.preventDefault();
-    const auth = getAuth();
+  const handleSignOut = async () => {
     try {
       await signOut(auth);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const updateDisplayName = async (e) => {
+    e.preventDefault();
+    try {
+      await updateProfile(auth.currentUser, {
+        displayName: displayName,
+      });
+      navigate("/");
     } catch (error) {
       console.error(error);
     }
@@ -22,6 +33,9 @@ export default function SetDisplayName() {
   useEffect(() => {
     if (!currentUser) {
       navigate("/auth");
+    }
+    if (currentUser.displayName) {
+      navigate("/");
     }
   }, [navigate, currentUser]);
 
@@ -39,7 +53,7 @@ export default function SetDisplayName() {
 
           <form
             className="flex flex-row gap-9 mt-10 w-3/4"
-            onSubmit={handleSignOut}
+            onSubmit={updateDisplayName}
           >
             <input
               type="text"
@@ -64,6 +78,12 @@ export default function SetDisplayName() {
               ""
             )}
           </form>
+          <button
+            className="p-3 text-white text-2xl font-light border-0 bg-emerald-400 w-1/6 rounded-lg mb-0.5"
+            onClick={handleSignOut}
+          >
+            Log out
+          </button>
         </div>
       </div>
     </>
