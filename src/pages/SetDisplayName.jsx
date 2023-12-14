@@ -2,6 +2,8 @@ import { getAuth, signOut, updateProfile } from "firebase/auth";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../components/AuthProvider";
+import { useDispatch } from "react-redux";
+import { createUser } from "../slice/usersSlice";
 
 export default function SetDisplayName() {
   const [displayName, setDisplayName] = useState("");
@@ -9,6 +11,7 @@ export default function SetDisplayName() {
   const navigate = useNavigate();
   const { currentUser } = useContext(AuthContext);
   const auth = getAuth();
+  const dispatch = useDispatch();
 
   const handleSignOut = async () => {
     try {
@@ -24,6 +27,12 @@ export default function SetDisplayName() {
       await updateProfile(auth.currentUser, {
         displayName: displayName,
       });
+      const data = {
+        uid: currentUser.uid,
+        photoURL: currentUser.photoURL,
+        displayName: currentUser.displayName,
+      };
+      dispatch(createUser(data));
       navigate("/");
     } catch (error) {
       console.error(error);
@@ -58,7 +67,7 @@ export default function SetDisplayName() {
             <input
               type="text"
               className="bg-gray-800 p-3 text-slate-400 text-2xl font-sans font-light w-3/4 outline-none rounded-lg focus:border-0 focus:border-b-[1px] focus:font-light focus:border-emerald-400 focus:font-sans focus:placeholder:text-emerald-400 focus:text-emerald-400 focus:placeholder-shown:0 focus:rounded-none focus:bg-gray-900 transition-all duration-100"
-              placeholder={isFocus ? "min. 2 char" : " Enter displayName"}
+              placeholder={isFocus ? "min. 1 char" : " Enter displayName"}
               required
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
@@ -67,7 +76,7 @@ export default function SetDisplayName() {
                 setIsFocus(false);
               }}
             />
-            {displayName.length > 1 ? (
+            {displayName.length >= 1 ? (
               <button
                 className="p-3 text-white text-2xl font-light border-0 bg-emerald-400 w-1/6 rounded-lg mb-0.5"
                 type="submit"

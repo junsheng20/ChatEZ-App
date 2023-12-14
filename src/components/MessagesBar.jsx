@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Message from "./Message";
 
 export default function MessageBar() {
   const [inputText, setInputText] = useState("");
@@ -18,9 +19,14 @@ export default function MessageBar() {
         </div>
       </div>
 
-      <div id="messages" className="w-full h-[calc(100%-164px)] bg-gray-800">
-        <h1>messages</h1>
-        <h1>messages</h1>
+      <div
+        id="messages"
+        className="w-full h-[calc(100%-164px)] bg-gray-800 px-12 py-6 flex flex-col gap-1 overflow-y-scroll"
+      >
+        <Message owner={"Jun Sheng"} />
+        <Message owner={"Jun Xian"} />
+        <Message owner={"Jun Sheng"} />
+        <Message owner={"Jun Xian"} />
       </div>
 
       <div

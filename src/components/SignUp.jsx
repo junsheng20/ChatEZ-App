@@ -5,11 +5,14 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { createUser } from "../slice/usersSlice";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const auth = getAuth();
+  const dispatch = useDispatch();
 
   const handleEmailSignUp = async (e) => {
     e.preventDefault();
@@ -25,6 +28,13 @@ export default function SignUp() {
     const provider = new GoogleAuthProvider();
     try {
       const res = await signInWithPopup(auth, provider);
+
+      const data = {
+        uid: res.user.uid,
+        photoURL: res.user.photoURL,
+        displayName: res.user.displayName,
+      };
+      dispatch(createUser(data));
       console.log(res.user);
     } catch (error) {
       console.error(error);
