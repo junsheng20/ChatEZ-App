@@ -7,7 +7,7 @@ import {
 } from "firebase/auth";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { createUser } from "../slice/usersSlice";
+import { checkUser, createUser } from "../slice/usersSlice";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -30,14 +30,27 @@ export default function Login() {
     const provider = new GoogleAuthProvider();
     try {
       const res = await signInWithPopup(auth, provider);
+      console.log(res.user);
 
       const data = {
         uid: res.user.uid,
         photoURL: res.user.photoURL,
         displayName: res.user.displayName,
       };
-      dispatch(createUser(data));
-      console.log(res.user);
+      try {
+        console.log(data.uid);
+        const check = await dispatch(checkUser(data.uid));
+        console.log(check);
+        if (checkUser.fulfilled.match(check)) {
+          const checkResult = check.payload;
+
+          if (checkResult.length === 0) {
+            dispatch(createUser(data));
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
     } catch (error) {
       console.error(error);
     }

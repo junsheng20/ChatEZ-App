@@ -42,9 +42,6 @@ export default function Search() {
         placeholder=" Find a user"
         onChange={(e) => setDisplayName(e.target.value)}
         value={displayName}
-        onBlur={() => {
-          setDisplayName("");
-        }}
       />
       {loading && (
         <div className="p-5 text-white text-lg">
@@ -54,7 +51,13 @@ export default function Search() {
       {users &&
         show &&
         users.map((user) => {
-          return <SearchResult key={user.uid} user={user} />;
+          return (
+            <SearchResult
+              key={user.uid}
+              user={user}
+              setDisplayName={setDisplayName}
+            />
+          );
         })}
     </div>
   );

@@ -16,7 +16,7 @@ export default function Message({ owner }) {
     >
       <div
         className={`w-max max-w-[80%] h-max ${
-          owner === displayName ? "bg-sky-600" : "bg-gray-700"
+          owner === displayName ? "bg-teal-500" : "bg-gray-700"
         }  p-2 px-4 rounded-xl`}
       >
         <div className="flex flex-row gap-4">

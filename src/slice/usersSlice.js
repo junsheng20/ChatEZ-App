@@ -22,6 +22,15 @@ export const fetchUsersByDisplayName = createAsyncThunk(
     }
 )
 
+// Async thunk for checking user exists
+export const checkUser = createAsyncThunk(
+  "users/check",
+  async (uid) => {
+    const response = await axios.get(`${BASE_URL}/users/${uid}`)
+    return response.data
+  }
+)
+
 const usersSlice = createSlice({
     name: "users",
     initialState: { users: [], loading: false },
