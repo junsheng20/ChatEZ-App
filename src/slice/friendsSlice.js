@@ -21,14 +21,37 @@ export const checkFriend = createAsyncThunk(
     }
 )
 
+// Async thunk for fetching friends
+export const fetchFriends = createAsyncThunk(
+  "friends/fetch",
+  async (currentUserid) => {
+    const response = await axios.get(`${BASE_URL}/friends/chats/${currentUserid}`)
+    console.log(response.data)
+    return response.data
+  }
+)
+
+// Async thunk for fetching friend details for title
+export const fetchFriendDetails = createAsyncThunk(
+  "friend/fetch",
+  async ({friendshipid, currentUserid}) => {
+    const response = await axios.get(`${BASE_URL}/friends/${friendshipid}/${currentUserid}`)
+    console.log(response.data)
+    return response.data
+  }
+)
+
 const friendsSlice = createSlice({
     name: "friends",
-    initialState: { friends: [], friendship: null, loading: false },
+    initialState: { friends: [], friend: [],loading: false },
     reducers: {},
     extraReducers: (builder) => {
       builder
-        .addCase(checkFriend.fulfilled, (state, action) => {
-          state.friendship = action.payload;
+        .addCase(fetchFriends.fulfilled, (state, action) => {
+          state.friends = action.payload
+        })
+        .addCase(fetchFriendDetails.fulfilled, (state, action) => {
+          state.friend = action.payload
         })
         
         

@@ -14,6 +14,7 @@ export default function Search() {
   useEffect(() => {
     const handleSearch = async () => {
       try {
+        console.log(displayName);
         await dispatch(fetchUsersByDisplayName(displayName));
       } catch (error) {
         console.error(error);

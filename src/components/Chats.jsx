@@ -1,24 +1,33 @@
+import { useDispatch, useSelector } from "react-redux";
+import Chat from "./Chat";
+import { useContext, useEffect } from "react";
+import { AuthContext } from "./AuthProvider";
+import { fetchFriends } from "../slice/friendsSlice";
+
 export default function Chats() {
+  const friends = useSelector((state) => state.friends.friends);
+  const { currentUser } = useContext(AuthContext);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (currentUser) {
+      try {
+        dispatch(fetchFriends(currentUser.uid));
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }, [currentUser, dispatch]);
+
   return (
     <div
       id="chats"
       className="bg-gray-800 w-full h-full flex flex-col text-5xl text-white scroll-p-0 scroll-m-0"
     >
-      <div className="w-full flex flex-row gap-5 p-5 hover:bg-gray-700">
-        <i className="fa-regular fa-circle-user"></i>
-        <div className="flex flex-col text-lg">
-          <p className="text-lg">James</p>
-          <p className="text-sm text-gray-300">Last Message</p>
-        </div>
-      </div>
-
-      <div className="w-full flex flex-row gap-5 p-5 hover:bg-gray-700">
-        <i className="fa-regular fa-circle-user"></i>
-        <div className="flex flex-col text-lg">
-          <p className="text-lg">James</p>
-          <p className="text-sm text-gray-300">Last Message</p>
-        </div>
-      </div>
+      {friends &&
+        friends.map((friend) => {
+          return <Chat key={friend.friendshipid} friend={friend} />;
+        })}
     </div>
   );
 }

@@ -16,8 +16,8 @@ export const createUser = createAsyncThunk(
 export const fetchUsersByDisplayName = createAsyncThunk(
     "users/fetchUsersByDisplayName",
     async (displayName) => {
-        const response = await axios.get(`${BASE_URL}/users/${displayName}`)
-        console.log(response.data)
+        const response = await axios.get(`${BASE_URL}/users/search/${displayName}`)
+        console.log(response)
         return response.data;
     }
 )

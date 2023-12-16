@@ -1,31 +1,45 @@
 import { useContext } from "react";
 import { AuthContext } from "./AuthProvider";
 
-export default function Message({ owner }) {
+export default function Message({ message }) {
   const { currentUser } = useContext(AuthContext);
-  let displayName;
+  let currentUserid;
   if (currentUser) {
-    displayName = currentUser.displayName;
+    currentUserid = currentUser.uid;
   }
+  const { senderid, receiverid, friendshipid, content, timestamp } = message;
+
+  const date = new Date(timestamp);
+
+  // Convert to local time
+  const localHours = date.getHours();
+  const hours = localHours % 12 || 12; // Convert 0 to 12 for 12-hour clock
+  const minutes = date.getMinutes();
+  const amOrPm = localHours >= 12 ? "pm" : "am";
+
+  // Format the time in 12-hour format (e.g., 11:00 pm)
+  const formattedTime = `${hours}:${
+    minutes < 10 ? "0" : ""
+  }${minutes} ${amOrPm}`;
 
   return (
     <div
       className={`flex ${
-        owner === displayName ? "flex-row-reverse" : "flex-row"
+        senderid === currentUserid ? "flex-row-reverse" : "flex-row"
       } w-full h-max`}
     >
       <div
         className={`w-max max-w-[80%] h-max ${
-          owner === displayName ? "bg-teal-500" : "bg-gray-700"
+          senderid === currentUserid ? "bg-teal-500" : "bg-gray-700"
         }  p-2 px-4 rounded-xl`}
       >
         <div className="flex flex-row gap-4">
           <p className="font-normal text-lg text-white whitespace-wrap break-all">
-            hello thanks for reaching out!
+            {content}
           </p>
           <div className="flex flex-col justify-end">
             <p className="min-w-[47px] font-light text-xs text-gray-300">
-              11:15 am
+              {formattedTime}
             </p>
           </div>
         </div>

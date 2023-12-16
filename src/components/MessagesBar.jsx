@@ -1,8 +1,64 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Message from "./Message";
+import { useDispatch, useSelector } from "react-redux";
+import useLocalStorage from "use-local-storage";
+import { fetchFriendDetails, fetchFriends } from "../slice/friendsSlice";
+import { AuthContext } from "./AuthProvider";
+import { retrieveMessages, sendMessages } from "../slice/messagesSlice";
 
 export default function MessageBar() {
   const [inputText, setInputText] = useState("");
+  const [currentChat, setCurrentChat] = useLocalStorage("currentChat");
+  const { currentUser } = useContext(AuthContext);
+  let currentUserid;
+  if (currentUser) {
+    currentUserid = currentUser.uid;
+  }
+  const friend = useSelector((state) => state.friends.friend);
+  const messages = useSelector((state) => state.messages.messages);
+  const dispatch = useDispatch();
+
+  const handleSend = () => {
+    const data = {
+      senderid: currentUserid,
+      receiverid: friend.uid,
+      friendshipid: currentChat,
+      content: inputText,
+    };
+    try {
+      dispatch(sendMessages(data));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setInputText("");
+    }
+  };
+
+  useEffect(() => {
+    if (currentChat) {
+      try {
+        dispatch(
+          fetchFriendDetails({
+            friendshipid: currentChat,
+            currentUserid,
+          })
+        );
+        dispatch(retrieveMessages(currentChat));
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }, [currentChat, currentUserid, dispatch]);
+
+  useEffect(() => {
+    if (messages.length === 1) {
+      try {
+        dispatch(fetchFriends(currentUserid));
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }, [currentUserid, dispatch, messages.length]);
 
   return (
     <div className="bg-black flex flex-col w-3/4">
@@ -11,8 +67,17 @@ export default function MessageBar() {
         className="bg-gray-700 w-full flex flex-row text-5xl p-5 pr-8 text-white justify-between"
       >
         <div className="flex flex-row gap-5">
-          <i className="fa-regular fa-circle-user"></i>
-          <p className="text-2xl pt-2">James</p>
+          {friend.photourl ? (
+            <img
+              src={friend.photourl}
+              alt="profile"
+              className="w-[48px] h-[48px] rounded-full"
+            />
+          ) : (
+            <i className="fa-regular fa-circle-user"></i>
+          )}
+
+          <p className="text-2xl pt-2">{friend.displayname}</p>
         </div>
         <div className="text-3xl mt-2 hover:opacity-80">
           <i className="fa-solid fa-ellipsis-vertical"></i>
@@ -21,12 +86,12 @@ export default function MessageBar() {
 
       <div
         id="messages"
-        className="w-full h-[calc(100%-164px)] bg-gray-800 px-12 py-6 flex flex-col gap-1 overflow-y-scroll"
+        className="w-full h-[calc(100%-164px)] bg-gray-800 px-12 py-6 flex flex-col-reverse gap-1"
       >
-        <Message owner={"Jun Sheng"} />
-        <Message owner={"Jun Xian"} />
-        <Message owner={"Jun Sheng"} />
-        <Message owner={"Jun Xian"} />
+        {messages &&
+          messages.map((message) => {
+            return <Message key={message.messageid} message={message} />;
+          })}
       </div>
 
       <div
@@ -46,7 +111,10 @@ export default function MessageBar() {
           />
         </div>
         {inputText.length > 0 ? (
-          <div className="text-3xl mt-1 w-1/12 hover:opacity-90">
+          <div
+            className="text-3xl mt-1 w-1/12 hover:opacity-90"
+            onClick={handleSend}
+          >
             <i className="fa-solid fa-paper-plane mx-auto"></i>
           </div>
         ) : (
