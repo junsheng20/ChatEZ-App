@@ -26,7 +26,6 @@ export const fetchFriends = createAsyncThunk(
   "friends/fetch",
   async (currentUserid) => {
     const response = await axios.get(`${BASE_URL}/friends/chats/${currentUserid}`)
-    console.log(response.data)
     return response.data
   }
 )
@@ -36,7 +35,6 @@ export const fetchFriendDetails = createAsyncThunk(
   "friend/fetch",
   async ({friendshipid, currentUserid}) => {
     const response = await axios.get(`${BASE_URL}/friends/${friendshipid}/${currentUserid}`)
-    console.log(response.data)
     return response.data
   }
 )
@@ -52,6 +50,10 @@ const friendsSlice = createSlice({
         })
         .addCase(fetchFriendDetails.fulfilled, (state, action) => {
           state.friend = action.payload
+          state.loading = false
+        })
+        .addCase(fetchFriendDetails.pending, (state) => {
+          state.loading = true
         })
         
         

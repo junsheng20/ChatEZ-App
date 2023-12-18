@@ -13,14 +13,6 @@ export default function SetDisplayName() {
   const auth = getAuth();
   const dispatch = useDispatch();
 
-  const handleSignOut = async () => {
-    try {
-      await signOut(auth);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const updateDisplayName = async (e) => {
     e.preventDefault();
     try {
@@ -50,14 +42,14 @@ export default function SetDisplayName() {
 
   return (
     <>
-      <div className="min-h-screen w-100 bg-gray-900 flex flex-row">
+      <div className="min-h-screen w-100 bg-gray-800 flex flex-row justify-center align-middle">
         <div className="flex flex-col mt-32 ml-32 gap-8">
           <h1 className="text-6xl text-white font-mono">
             You&apos;re almost there! 👋
           </h1>
           <p className="text-3xl text-white font-mono">
-            Create <span className="italic text-emerald-400">displayName</span>{" "}
-            to get started
+            Create <span className="italic text-teal-500">displayName</span> to
+            get started
           </p>
 
           <form
@@ -66,7 +58,7 @@ export default function SetDisplayName() {
           >
             <input
               type="text"
-              className="bg-gray-800 p-3 text-slate-400 text-2xl font-sans font-light w-3/4 outline-none rounded-lg focus:border-0 focus:border-b-[1px] focus:font-light focus:border-emerald-400 focus:font-sans focus:placeholder:text-emerald-400 focus:text-emerald-400 focus:placeholder-shown:0 focus:rounded-none focus:bg-gray-900 transition-all duration-100"
+              className="bg-gray-900 p-3 text-2xl text-teal-500 font-sans font-thin w-3/4 outline-none focus:border-0 focus:border-b-[1px] focus:border-teal-500 focus:placeholder:text-teal-500 focus:text-teal-500 focus:placeholder-shown:0 transition-all duration-100"
               placeholder={isFocus ? "min. 1 char" : " Enter displayName"}
               required
               value={displayName}
@@ -78,7 +70,7 @@ export default function SetDisplayName() {
             />
             {displayName.length >= 1 ? (
               <button
-                className="p-3 text-white text-2xl font-light border-0 bg-emerald-400 w-1/6 rounded-lg mb-0.5"
+                className="p-3 text-white text-2xl font-light border-0 bg-teal-500 w-1/6 rounded-lg mb-0.5"
                 type="submit"
               >
                 <i className="fa-solid fa-arrow-right"></i>
@@ -87,12 +79,6 @@ export default function SetDisplayName() {
               ""
             )}
           </form>
-          <button
-            className="p-3 text-white text-2xl font-light border-0 bg-emerald-400 w-1/6 rounded-lg mb-0.5"
-            onClick={handleSignOut}
-          >
-            Log out
-          </button>
         </div>
       </div>
     </>

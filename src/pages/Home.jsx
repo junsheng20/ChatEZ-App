@@ -7,7 +7,6 @@ import MessageBar from "../components/MessagesBar";
 export default function HomePage() {
   const navigate = useNavigate();
   const { currentUser } = useContext(AuthContext);
-
   useEffect(() => {
     if (!currentUser) {
       navigate("/auth");

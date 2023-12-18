@@ -1,5 +1,7 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "./AuthProvider";
+import { useDispatch } from "react-redux";
+import { deleteMessages } from "../slice/messagesSlice";
 
 export default function Message({ message }) {
   const { currentUser } = useContext(AuthContext);
@@ -7,7 +9,32 @@ export default function Message({ message }) {
   if (currentUser) {
     currentUserid = currentUser.uid;
   }
-  const { senderid, receiverid, friendshipid, content, timestamp } = message;
+  const { messageid, senderid, receiverid, friendshipid, content, timestamp } =
+    message;
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+
+  const handleHover = () => {
+    setShowDropdown(true);
+  };
+
+  const handleLeave = () => {
+    setShowDropdown(false);
+  };
+
+  const handleDeleteMessage = async () => {
+    try {
+      setLoading(true);
+      console.log("start delete");
+      await dispatch(deleteMessages(messageid));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+      console.log("delete complete");
+    }
+  };
 
   const date = new Date(timestamp);
 
@@ -27,6 +54,8 @@ export default function Message({ message }) {
       className={`flex ${
         senderid === currentUserid ? "flex-row-reverse" : "flex-row"
       } w-full h-max`}
+      onMouseEnter={handleHover}
+      onMouseLeave={handleLeave}
     >
       <div
         className={`w-max max-w-[80%] h-max ${
@@ -37,11 +66,36 @@ export default function Message({ message }) {
           <p className="font-normal text-lg text-white whitespace-wrap break-all">
             {content}
           </p>
-          <div className="flex flex-col justify-end">
-            <p className="min-w-[47px] font-light text-xs text-gray-300">
-              {formattedTime}
-            </p>
-          </div>
+
+          {loading ? (
+            <div className="flex flex-col justify-center">
+              <button
+                className="min-w-[50px] font-light text-md text-white"
+                disabled
+              >
+                <i className="animate-spin fa-solid fa-spinner"></i>
+              </button>
+            </div>
+          ) : (
+            <div className="flex">
+              {showDropdown && senderid === currentUserid ? (
+                <div className="flex flex-col justify-center">
+                  <button
+                    className="min-w-[50px] font-light text-md text-white"
+                    onClick={handleDeleteMessage}
+                  >
+                    <i className="fa-solid fa-trash"></i>
+                  </button>
+                </div>
+              ) : (
+                <div className="flex flex-col justify-end">
+                  <p className="min-w-[50px] font-light text-xs text-gray-300">
+                    {formattedTime}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -18,16 +18,16 @@ export default function AuthPage() {
   return (
     <div className="min-h-screen w-100">
       {/* Top Bar */}
-      <div className="h-28 bg-gray-900">
+      <div className="h-28 bg-gray-800">
         <div className="max-w-6xl flex flex-row justify-between mx-auto py-8">
           <div className="font-mono text-5xl text-white font-semibold">
-            Chat<span className="text-emerald-400">EZ</span>
+            Chat<span className="text-teal-500">EZ</span>
           </div>
 
           {isSignUp ? (
             <div className="font-sans text-white pt-4 text-lg">
               <p>
-                <span className="text-emerald-400 hover:underline">
+                <span className="text-teal-500 hover:underline">
                   <a
                     href=""
                     onClick={(e) => {
@@ -46,7 +46,7 @@ export default function AuthPage() {
             <div className="font-sans text-white pt-4 text-lg">
               <p>
                 New User?{" "}
-                <span className="text-emerald-400 hover:underline">
+                <span className="text-teal-500 hover:underline">
                   <a
                     href=""
                     onClick={(e) => {
@@ -64,15 +64,15 @@ export default function AuthPage() {
       </div>
 
       {/* Bottom Bar */}
-      <div className="h-[calc(100vh-112px)] bg-gray-900 flex flex-row">
+      <div className="h-[calc(100vh-112px)] bg-gray-800 flex flex-row">
         {/* Bottom Left */}
-        <div className="w-2/5 h-full bg-gray-900 flex align-middle max-w-7xl">
+        {/* <div className="w-2/5 h-full bg-gray-800 flex align-middle max-w-7xl">
           <img
             src="src/assets/chatEZ.png"
             alt="Logo"
             className="mx-auto h-80 mt-28"
           />
-        </div>
+        </div> */}
 
         {/* Bottom Right */}
         {isSignUp ? <SignUp /> : <Login />}

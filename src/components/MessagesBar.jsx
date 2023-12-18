@@ -17,6 +17,7 @@ export default function MessageBar() {
   const friend = useSelector((state) => state.friends.friend);
   const messages = useSelector((state) => state.messages.messages);
   const dispatch = useDispatch();
+  const loading = useSelector((state) => state.friends.loading);
 
   const handleSend = () => {
     const data = {
@@ -43,7 +44,9 @@ export default function MessageBar() {
             currentUserid,
           })
         );
-        dispatch(retrieveMessages(currentChat));
+        dispatch(
+          retrieveMessages({ friendshipid: currentChat, currentUserid })
+        );
       } catch (error) {
         console.error(error);
       }
@@ -66,19 +69,39 @@ export default function MessageBar() {
         id="friendbar"
         className="bg-gray-700 w-full flex flex-row text-5xl p-5 pr-8 text-white justify-between"
       >
-        <div className="flex flex-row gap-5">
-          {friend.photourl ? (
-            <img
-              src={friend.photourl}
-              alt="profile"
-              className="w-[48px] h-[48px] rounded-full"
-            />
-          ) : (
-            <i className="fa-regular fa-circle-user"></i>
-          )}
+        {loading ? (
+          <div className="flex flex-row gap-5 h-[48px] text-white">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+              className="animate-spin h-[48px] w-[48px]"
+              fill="white"
+            >
+              <path d="M304 48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zm0 416a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM48 304a48 48 0 1 0 0-96 48 48 0 1 0 0 96zm464-48a48 48 0 1 0 -96 0 48 48 0 1 0 96 0zM142.9 437A48 48 0 1 0 75 369.1 48 48 0 1 0 142.9 437zm0-294.2A48 48 0 1 0 75 75a48 48 0 1 0 67.9 67.9zM369.1 437A48 48 0 1 0 437 369.1 48 48 0 1 0 369.1 437z" />
+            </svg>
+          </div>
+        ) : (
+          <div>
+            {friend ? (
+              <div className="flex flex-row gap-5">
+                {friend.photourl ? (
+                  <img
+                    src={friend.photourl}
+                    alt="profile"
+                    className="w-[48px] h-[48px] rounded-full"
+                  />
+                ) : (
+                  <i className="fa-regular fa-circle-user"></i>
+                )}
 
-          <p className="text-2xl pt-2">{friend.displayname}</p>
-        </div>
+                <p className="text-2xl pt-2">{friend.displayname}</p>
+              </div>
+            ) : (
+              <div className="flex flex-row gap-5 h-[48px]"></div>
+            )}
+          </div>
+        )}
+
         <div className="text-3xl mt-2 hover:opacity-80">
           <i className="fa-solid fa-ellipsis-vertical"></i>
         </div>
@@ -88,6 +111,18 @@ export default function MessageBar() {
         id="messages"
         className="w-full h-[calc(100%-164px)] bg-gray-800 px-12 py-6 flex flex-col-reverse gap-1"
       >
+        {messages.length === 0 && (
+          <div className="flex flex-col justify-center gap-10 h-full py-32">
+            <h1 className="font-mono text-white text-2xl mx-auto">
+              Search for users to start a chat !
+            </h1>
+            <img
+              src="src/assets/group-chat_5907298.png"
+              alt=""
+              className="w-1/3 h-4/5 mx-auto"
+            />
+          </div>
+        )}
         {messages &&
           messages.map((message) => {
             return <Message key={message.messageid} message={message} />;

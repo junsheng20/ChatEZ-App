@@ -7,18 +7,25 @@ export const sendMessages = createAsyncThunk(
     "messages/send",
     async (data) => {
         const response = await axios.post(`${BASE_URL}/messages`, data)
-        console.log(response.data)
         return response.data
     }
 )
 
 export const retrieveMessages = createAsyncThunk(
     "messages/retrieve",
-    async (friendshipid) => {
-        const response = await axios.get(`${BASE_URL}/messages/${friendshipid}`)
+    async ({friendshipid, currentUserid}) => {
+        const response = await axios.get(`${BASE_URL}/messages/${friendshipid}/${currentUserid}`)
         console.log(response.data)
         return response.data
     }
+)
+
+export const deleteMessages = createAsyncThunk(
+    "message/delete",
+    async (messageid) => {
+        const response = await axios.delete(`${BASE_URL}/messages/${messageid}`)
+        return response.data
+    } 
 )
 
 const messagesSlice = createSlice({
@@ -32,6 +39,9 @@ const messagesSlice = createSlice({
             })
             .addCase(retrieveMessages.fulfilled, (state, action) => {
                 state.messages = action.payload
+            })
+            .addCase(deleteMessages.fulfilled, (state, action) => {
+                state.messages = state.messages.filter((message) => message.messageid !== action.payload.messageid)
             })
     }
 })
