@@ -2,8 +2,9 @@ import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import { useContext } from "react";
 import { AuthContext } from "./AuthProvider";
+import { FaUserCircle } from "react-icons/fa";
 
-export default function Navbar() {
+export default function Navbar({ setShowProfile }) {
   const { currentUser } = useContext(AuthContext);
   let photoURL;
   if (currentUser) {
@@ -26,9 +27,10 @@ export default function Navbar() {
             src={currentUser.photoURL}
             alt=""
             className="w-[48px] h-[48px] rounded-full"
+            onClick={() => setShowProfile(true)}
           />
         ) : (
-          <i className="fa-regular fa-circle-user"></i>
+          <FaUserCircle onClick={() => setShowProfile(true)} />
         )}
       </div>
       <button

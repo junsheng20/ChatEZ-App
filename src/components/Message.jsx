@@ -1,7 +1,8 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "./AuthProvider";
 import { useDispatch } from "react-redux";
 import { deleteMessages } from "../slice/messagesSlice";
+import axios from "axios";
 
 export default function Message({ message }) {
   const { currentUser } = useContext(AuthContext);
@@ -13,6 +14,7 @@ export default function Message({ message }) {
     message;
   const [showDropdown, setShowDropdown] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [msgContent, setMsgContent] = useState(null);
   const dispatch = useDispatch();
 
   const handleHover = () => {
@@ -23,16 +25,43 @@ export default function Message({ message }) {
     setShowDropdown(false);
   };
 
+  const handleTranslateMessage = async () => {
+    const encodedParams = new URLSearchParams();
+    encodedParams.set("from", "auto");
+    encodedParams.set("to", "en");
+    encodedParams.set("text", content);
+
+    const options = {
+      method: "POST",
+      url: "https://google-translate113.p.rapidapi.com/api/v1/translator/text",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+        "X-RapidAPI-Key": "92bbf7a67amsh4f13ed8ebdae9f9p1c3c41jsnf03b4159990d",
+        "X-RapidAPI-Host": "google-translate113.p.rapidapi.com",
+      },
+      data: encodedParams,
+    };
+
+    try {
+      setLoading(true);
+      const response = await axios.request(options);
+      console.log(response.data);
+      setMsgContent(response.data.trans);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleDeleteMessage = async () => {
     try {
       setLoading(true);
-      console.log("start delete");
       await dispatch(deleteMessages(messageid));
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
-      console.log("delete complete");
     }
   };
 
@@ -49,22 +78,28 @@ export default function Message({ message }) {
     minutes < 10 ? "0" : ""
   }${minutes} ${amOrPm}`;
 
+  useEffect(() => {
+    if (message) {
+      setMsgContent(content);
+    }
+  }, [content, message]);
+
   return (
     <div
       className={`flex ${
         senderid === currentUserid ? "flex-row-reverse" : "flex-row"
       } w-full h-max`}
-      onMouseEnter={handleHover}
-      onMouseLeave={handleLeave}
     >
       <div
         className={`w-max max-w-[80%] h-max ${
           senderid === currentUserid ? "bg-teal-500" : "bg-gray-700"
         }  p-2 px-4 rounded-xl`}
+        onMouseEnter={handleHover}
+        onMouseLeave={handleLeave}
       >
         <div className="flex flex-row gap-4">
           <p className="font-normal text-lg text-white whitespace-wrap break-all">
-            {content}
+            {msgContent}
           </p>
 
           {loading ? (
@@ -78,13 +113,21 @@ export default function Message({ message }) {
             </div>
           ) : (
             <div className="flex">
-              {showDropdown && senderid === currentUserid ? (
+              {showDropdown ? (
                 <div className="flex flex-col justify-center">
                   <button
                     className="min-w-[50px] font-light text-md text-white"
-                    onClick={handleDeleteMessage}
+                    onClick={
+                      senderid === currentUserid
+                        ? handleDeleteMessage
+                        : handleTranslateMessage
+                    }
                   >
-                    <i className="fa-solid fa-trash"></i>
+                    {senderid === currentUserid ? (
+                      <i className="fa-solid fa-trash"></i>
+                    ) : (
+                      <i className="fa-solid fa-language"></i>
+                    )}
                   </button>
                 </div>
               ) : (

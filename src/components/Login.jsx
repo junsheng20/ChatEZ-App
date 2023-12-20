@@ -94,7 +94,7 @@ export default function Login() {
         <div className="flex justify-center">
           <input
             type="email"
-            className="font-sans font-thin focus:font-thin text-3xl text-white bg-gray-900 border-0 border-white focus:border-0 focus:border-b-[1px] focus:-mt-[1px]  focus:border-teal-500 w-3/4 outline-0 p-3 focus:placeholder:text-teal-500 focus:text-teal-500 transition-all duration-100"
+            className="font-sans font-thin text-3xl text-white bg-gray-900 border-0 border-b-[1px] border-gray-800 focus:border-teal-500 w-3/4 outline-0 p-3 focus:placeholder:text-teal-500 focus:text-teal-500 transition-all duration-500"
             placeholder="Email"
             onChange={(e) => setEmail(e.target.value)}
             value={email}
@@ -103,7 +103,7 @@ export default function Login() {
         <div className="flex justify-center">
           <input
             type="password"
-            className="font-sans font-thin text-3xl text-white bg-gray-900 border-0 border-white focus:border-0 focus:border-b-[1px] focus:-mt-[1px]  focus:border-teal-500 w-3/4 outline-0 p-3 focus:placeholder:text-teal-500 focus:text-teal-500 transition-all duration-100"
+            className="font-sans font-thin text-3xl text-white bg-gray-900 border-0 border-b-[1px] border-gray-800 focus:border-teal-500 w-3/4 outline-0 p-3 focus:placeholder:text-teal-500 focus:text-teal-500 transition-all duration-500"
             placeholder="Password"
             onChange={(e) => setPassword(e.target.value)}
             value={password}

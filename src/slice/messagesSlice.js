@@ -15,7 +15,6 @@ export const retrieveMessages = createAsyncThunk(
     "messages/retrieve",
     async ({friendshipid, currentUserid}) => {
         const response = await axios.get(`${BASE_URL}/messages/${friendshipid}/${currentUserid}`)
-        console.log(response.data)
         return response.data
     }
 )

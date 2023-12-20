@@ -1,4 +1,5 @@
 import useLocalStorage from "use-local-storage";
+import { FaUserCircle } from "react-icons/fa";
 
 export default function Chat({ friend }) {
   const { photourl, displayname, content, timestamp, friendshipid } = friend;
@@ -20,7 +21,7 @@ export default function Chat({ friend }) {
           className="w-[48px] h-[48px] rounded-full"
         />
       ) : (
-        <i className="fa-regular fa-circle-user"></i>
+        <FaUserCircle />
       )}
       <div className="flex flex-col text-lg">
         <p className="text-lg">{displayname}</p>

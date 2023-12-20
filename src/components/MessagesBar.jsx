@@ -5,6 +5,7 @@ import useLocalStorage from "use-local-storage";
 import { fetchFriendDetails, fetchFriends } from "../slice/friendsSlice";
 import { AuthContext } from "./AuthProvider";
 import { retrieveMessages, sendMessages } from "../slice/messagesSlice";
+import { FaUserCircle } from "react-icons/fa";
 
 export default function MessageBar() {
   const [inputText, setInputText] = useState("");
@@ -63,6 +64,23 @@ export default function MessageBar() {
     }
   }, [currentUserid, dispatch, messages.length]);
 
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (e.key === "Enter") {
+        handleSend();
+      }
+    };
+
+    document
+      .getElementById("in_put")
+      .addEventListener("keypress", handleKeyPress);
+    return () => {
+      document
+        .getElementById("in_put")
+        .removeEventListener("keypress", handleKeyPress);
+    };
+  }, [handleSend]);
+
   return (
     <div className="bg-black flex flex-col w-3/4">
       <div
@@ -91,7 +109,7 @@ export default function MessageBar() {
                     className="w-[48px] h-[48px] rounded-full"
                   />
                 ) : (
-                  <i className="fa-regular fa-circle-user"></i>
+                  <FaUserCircle />
                 )}
 
                 <p className="text-2xl pt-2">{friend.displayname}</p>

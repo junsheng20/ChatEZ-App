@@ -30,6 +30,24 @@ export const checkUser = createAsyncThunk(
   }
 )
 
+// Async thunk for updating photourl
+export const updateUserPhotoURL = createAsyncThunk(
+  "users/updatePhotoURL",
+  async ({photourl,uid}) => {
+    const response = await axios.put(`${BASE_URL}/users/photourl/${uid}`, photourl)
+    return response.data
+  }
+)
+
+// Async thunk for updating displayname
+export const updateUserDisplayName = createAsyncThunk(
+  "users/updateDisplayName",
+  async ({displayname, uid}) => {
+    const response = await axios.put(`${BASE_URL}/users/displayName/${uid}`, displayname)
+    return response.data
+  }
+)
+
 const usersSlice = createSlice({
     name: "users",
     initialState: { users: [], loading: false },
