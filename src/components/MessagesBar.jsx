@@ -120,7 +120,7 @@ export default function MessageBar() {
               Search for users to start a chat !
             </h1>
             <img
-              src="src/assets/group-chat_5907298.png"
+              src="https://firebasestorage.googleapis.com/v0/b/chatez-ed4e6.appspot.com/o/group-chat_5907298.png?alt=media&token=f64e2e84-0ce0-48bd-82ca-18458c5ae932"
               alt=""
               className="w-1/3 h-4/5 mx-auto"
             />
