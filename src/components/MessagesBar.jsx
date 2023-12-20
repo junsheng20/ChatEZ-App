@@ -64,23 +64,6 @@ export default function MessageBar() {
     }
   }, [currentUserid, dispatch, messages.length]);
 
-  useEffect(() => {
-    const handleKeyPress = (e) => {
-      if (e.key === "Enter") {
-        handleSend();
-      }
-    };
-
-    document
-      .getElementById("in_put")
-      .addEventListener("keypress", handleKeyPress);
-    return () => {
-      document
-        .getElementById("in_put")
-        .removeEventListener("keypress", handleKeyPress);
-    };
-  }, [handleSend]);
-
   return (
     <div className="bg-black flex flex-col w-3/4">
       <div
@@ -127,7 +110,9 @@ export default function MessageBar() {
 
       <div
         id="messages"
-        className="w-full h-[calc(100%-164px)] bg-gray-800 px-12 py-6 flex flex-col-reverse gap-1"
+        className={`w-full h-[calc(100%-164px)] bg-gray-800 px-12 py-6 flex flex-col-reverse gap-1 ${
+          messages.length === 0 ? "" : "overflow-y-auto"
+        }`}
       >
         {messages.length === 0 && (
           <div className="flex flex-col justify-center gap-10 h-full py-32">
@@ -146,34 +131,45 @@ export default function MessageBar() {
             return <Message key={message.messageid} message={message} />;
           })}
       </div>
-
-      <div
-        id="in_put"
-        className="w-full p-4 bg-gray-700 flex flex-row gap-5 text-white"
-      >
-        <div className="text-3xl mt-1 w-1/12 pl-10 hover:opacity-80">
-          <i className="fa-solid fa-plus"></i>
-        </div>
-        <div className="w-10/12">
-          <input
-            type="text"
-            className="border-0 bg-gray-600 w-full p-2 pl-5 text-xl rounded-2xl text-white placeholder:font-extralight outline-none font-extralight"
-            placeholder="Type a message"
-            onChange={(e) => setInputText(e.target.value)}
-            value={inputText}
-          />
-        </div>
-        {inputText.length > 0 ? (
-          <div
-            className="text-3xl mt-1 w-1/12 hover:opacity-90"
-            onClick={handleSend}
-          >
-            <i className="fa-solid fa-paper-plane mx-auto"></i>
+      {messages.length === 0 ? (
+        <div
+          id="in_put"
+          className="w-full h-[76px] p-4 bg-gray-700 flex flex-row gap-5 text-white"
+        ></div>
+      ) : (
+        <div
+          id="in_put"
+          className="w-full p-4 bg-gray-700 flex flex-row gap-5 text-white"
+        >
+          <div className="text-3xl mt-1 w-1/12 pl-10 hover:opacity-80">
+            <i className="fa-solid fa-plus"></i>
           </div>
-        ) : (
-          <div className="w-1/12"></div>
-        )}
-      </div>
+          <div className="w-10/12">
+            <input
+              type="text"
+              className="border-0 bg-gray-600 w-full p-2 pl-5 text-xl rounded-2xl text-white placeholder:font-extralight outline-none font-extralight"
+              placeholder="Type a message"
+              onChange={(e) => setInputText(e.target.value)}
+              value={inputText}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  handleSend();
+                }
+              }}
+            />
+          </div>
+          {inputText.length > 0 ? (
+            <div
+              className="text-3xl mt-1 w-1/12 hover:opacity-90"
+              onClick={handleSend}
+            >
+              <i className="fa-solid fa-paper-plane mx-auto"></i>
+            </div>
+          ) : (
+            <div className="w-1/12"></div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
