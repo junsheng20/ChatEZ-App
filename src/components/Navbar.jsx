@@ -34,7 +34,7 @@ export default function Navbar({ setShowProfile }) {
         )}
       </div>
       <button
-        className="text-lg bg-gray-600 px-3 rounded-xl hover:bg-gray-500"
+        className="text-lg bg-gray-600 px-3 rounded-xl hover:bg-gray-500 hidden sm:block"
         onClick={handleSignOut}
       >
         Log Out

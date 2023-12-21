@@ -23,9 +23,9 @@ export default function Chat({ friend }) {
       ) : (
         <FaUserCircle />
       )}
-      <div className="flex flex-col text-lg">
-        <p className="text-lg">{displayname}</p>
-        <p className="text-sm text-gray-300">{content}</p>
+      <div className="flex flex-col text-lg ">
+        <p className="text-lg hidden sm:block">{displayname}</p>
+        <p className="text-sm text-gray-300 hidden sm:block">{content}</p>
       </div>
     </div>
   );

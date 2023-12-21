@@ -91,7 +91,7 @@ export default function ProfilePage2({ setShowProfile }) {
         </div>
       </div>
 
-      <div className="flex flex-col">
+      <div className="flex flex-col overflow-hidden">
         <form action="" onSubmit={handleUpdateDisplayName}>
           <input
             type="file"

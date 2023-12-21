@@ -141,7 +141,7 @@ export default function MessageBar() {
           id="in_put"
           className="w-full p-4 bg-gray-700 flex flex-row gap-5 text-white"
         >
-          <div className="text-3xl mt-1 w-1/12 pl-10 hover:opacity-80">
+          <div className="text-3xl mt-1 w-1/12 pl-10 hover:opacity-80 hidden sm:block">
             <i className="fa-solid fa-plus"></i>
           </div>
           <div className="w-10/12">
