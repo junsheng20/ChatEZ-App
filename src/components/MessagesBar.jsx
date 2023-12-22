@@ -131,45 +131,39 @@ export default function MessageBar() {
             return <Message key={message.messageid} message={message} />;
           })}
       </div>
-      {messages.length === 0 ? (
-        <div
-          id="in_put"
-          className="w-full h-[76px] p-4 bg-gray-700 flex flex-row gap-5 text-white"
-        ></div>
-      ) : (
-        <div
-          id="in_put"
-          className="w-full p-4 bg-gray-700 flex flex-row gap-5 text-white"
-        >
-          <div className="text-3xl mt-1 w-1/12 pl-10 hover:opacity-80 hidden sm:block">
-            <i className="fa-solid fa-plus"></i>
-          </div>
-          <div className="w-10/12">
-            <input
-              type="text"
-              className="border-0 bg-gray-600 w-full p-2 pl-5 text-xl rounded-2xl text-white placeholder:font-extralight outline-none font-extralight"
-              placeholder="Type a message"
-              onChange={(e) => setInputText(e.target.value)}
-              value={inputText}
-              onKeyPress={(e) => {
-                if (e.key === "Enter") {
-                  handleSend();
-                }
-              }}
-            />
-          </div>
-          {inputText.length > 0 ? (
-            <div
-              className="text-3xl mt-1 w-1/12 hover:opacity-90"
-              onClick={handleSend}
-            >
-              <i className="fa-solid fa-paper-plane mx-auto"></i>
-            </div>
-          ) : (
-            <div className="w-1/12"></div>
-          )}
+
+      <div
+        id="in_put"
+        className="w-full p-4 bg-gray-700 flex flex-row gap-5 text-white"
+      >
+        <div className="text-3xl mt-1 w-1/12 pl-10 hover:opacity-80 hidden sm:block">
+          <i className="fa-solid fa-plus"></i>
         </div>
-      )}
+        <div className="w-10/12">
+          <input
+            type="text"
+            className="border-0 bg-gray-600 w-full p-2 pl-5 text-xl rounded-2xl text-white placeholder:font-extralight outline-none font-extralight"
+            placeholder="Type a message"
+            onChange={(e) => setInputText(e.target.value)}
+            value={inputText}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                handleSend();
+              }
+            }}
+          />
+        </div>
+        {inputText.length > 0 ? (
+          <div
+            className="text-3xl mt-1 w-1/12 hover:opacity-90"
+            onClick={handleSend}
+          >
+            <i className="fa-solid fa-paper-plane mx-auto"></i>
+          </div>
+        ) : (
+          <div className="w-1/12"></div>
+        )}
+      </div>
     </div>
   );
 }
