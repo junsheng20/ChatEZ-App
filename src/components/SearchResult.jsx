@@ -1,8 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "./AuthProvider";
-import { useDispatch, useSelector } from "react-redux";
-import { checkFriend, createFriend, fetchFriends } from "../slice/friendsSlice";
+import { useDispatch } from "react-redux";
+import { checkFriend, createFriend } from "../slice/friendsSlice";
 import useLocalStorage from "use-local-storage";
+import { FaUserCircle } from "react-icons/fa";
 
 export default function SearchResult({ user, setDisplayName }) {
   const { photourl, displayname, uid } = user;
@@ -65,7 +66,7 @@ export default function SearchResult({ user, setDisplayName }) {
       {photourl ? (
         <img src={photourl} alt="" className="w-[48px] h-[48px] rounded-full" />
       ) : (
-        <i className="fa-regular fa-circle-user"></i>
+        <FaUserCircle />
       )}
 
       {loading ? (
